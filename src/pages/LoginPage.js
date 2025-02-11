@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useFetchUsers } from "../hooks/useFetch";
 import { setUserIdOnLocalStorage } from "../utils/storage";
 import { getImagePath } from "../utils/image-path";
+import { trackAnalyticsScript } from "../utils/analytics-script";
 
 const LoginPage = () => {
   const [password, setPassword] = useState("");
@@ -18,8 +19,15 @@ const LoginPage = () => {
 
   const filteredItems = items.filter(
     (item) =>
-      item.alternateName === "alexandercampbell" ||
-      item.alternateName === "arjunacollins"
+      item.emailAddress === "christian.carter@clarityvisionsolutions.com" ||
+    item.emailAddress === "capeloj@hotmail.com" ||
+    item.emailAddress === "walter.douglas@clarityvisionsolutions.com" ||
+    item.emailAddress === "adrienn.kocsis@liferay.com" ||
+    item.emailAddress === "ian.miller@clarityvisionsolutions.com" ||
+    item.emailAddress === "harper.roberts@clarityvisionsolutions.com" ||
+    item.emailAddress === "terrence.wheatley@somedistributor.com" ||    
+    item.emailAddress === "admin@clarityvisionsolutions.com" ||    
+    item.emailAddress === "clara.murphy@clarityvisionsolutions.com"
   );
 
   return (
@@ -27,7 +35,7 @@ const LoginPage = () => {
       <ClayForm.Group className="sheet">
         <div className="text-center mb-4 position-relative">
           <img
-            src={`${getImagePath()}/LiferayStateLogo-LoginPage.png`}
+            src={`${getImagePath()}/logo-full-name-vector_clarity.svg`}
             alt="logo"
           />
         </div>
@@ -66,7 +74,7 @@ const LoginPage = () => {
 
         <div className="text-center mt-3">
           <Link
-            onClick={() => setUserIdOnLocalStorage(selectedUserId)}
+            onClick={() => {setUserIdOnLocalStorage(selectedUserId);trackAnalyticsScript(selectedUserId)}}
             className="login-link"
             to={isLinkEnabled ? `/home?userId=${selectedUserId}` : ""}
           >

@@ -11,7 +11,7 @@ const Header = ({ value, onChange, showFilter = true, userName }) => {
       <Link to={`/home?userId=${userId}`}>
         <div className="position-relative">
           <img
-            src={`${getImagePath()}/LiferayStateLogo-LoginPage.png`}
+            src={`${getImagePath()}/logo-full-name-vector_clarity.svg`}
             alt="logo"
           />
         </div>
@@ -21,22 +21,13 @@ const Header = ({ value, onChange, showFilter = true, userName }) => {
         <div className="d-flex">
           <ul className="fake-navigation mb-4">
             <li>
-              <a href="/">News</a>
+              <a href="/">Blog</a>
             </li>
             <li>
-              <a href="/">Events</a>
+              <a href="/">About us</a>
             </li>
             <li>
-              <a href="/">Documents</a>
-            </li>
-            <li>
-              <a href="/">About </a>
-            </li>
-            <li>
-              <a href="/">Education</a>
-            </li>
-            <li>
-              <a href="/">Citizen Area</a>
+              <a href="/">Knowledge Base</a>
             </li>
           </ul>
 

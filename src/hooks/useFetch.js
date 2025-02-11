@@ -11,15 +11,16 @@ export const useFetchRecommendations = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const { loading: loadingUser, item } = useFetchUser(userId);
-
+  
   useEffect(() => {
     const fetchRecommendation = async () => {
       try {
         const response = await fetch(
-          `https://webserver-lctgvrnmnt-prd.lfr.cloud/o/headless-delivery/v1.0/sites/46872/content-set-providers/by-key/com.liferay.analytics.machine.learning.internal.recommendation.info.collection.provider.UserContentRecommendationInfoItemCollectionProvider/content-set-elements`,
+          `https://webserver-lctclaritytemplate-prd.lfr.cloud/o/headless-delivery/v1.0/sites/32495/content-set-providers/by-key/com.liferay.analytics.machine.learning.internal.recommendation.info.collection.provider.UserContentRecommendationInfoItemCollectionProvider/content-set-elements`,
           {
             headers: {
-              Authorization: `Basic ${btoa(`${item.alternateName}:test`)}`,
+              //Authorization: `Basic ${btoa(`${item.alternateName}:test`)}`,
+              Authorization: `Basic ${btoa(`${item.emailAddress}:test`)}`,
             },
           }
         );
@@ -68,11 +69,12 @@ export const useFetchUsers = () => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          `https://webserver-lctgvrnmnt-prd.lfr.cloud/o/headless-admin-user/v1.0/user-accounts?search=ac`,
+          `https://webserver-lctclaritytemplate-prd.lfr.cloud/o/headless-admin-user/v1.0/user-accounts`,
           {
             headers: {
               Authorization:
-                "Basic YWMxOnRoaXNpc2FuYWxtb3N0dW5ndWVzc2FibGVidXRhbnl3YXl1bmltcG9ydGFudHBhc3N3b3Jk",
+                // "Basic YWRtaW5AY2xhcml0eXZpc2lvbnNvbHV0aW9ucy5jb206R2FydG5lck1RMjQ=",
+                `Basic ${btoa(`test@liferay.com:test`)}`,
             },
           }
         );

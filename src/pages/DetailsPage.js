@@ -6,15 +6,15 @@ import { documentTitle, url } from "../utils/constants";
 import Header from "../components/Header";
 import { useQuery } from "../hooks/useQuery";
 import { startAnalyticsScript } from "../utils/analytics-script";
+import { trackAnalyticsDocScript } from "../utils/analytics-script";
 
 const DetailsPage = () => {
   const { item, loading: loadingItem } = useFetchRecommendationItem();
   const userId = useQuery("userId");
-  const imageField = item?.contentFields?.find(({ label }) => label === "Image")
-    ?.contentFieldValue?.image?.contentUrl;
 
-  const content = item?.contentFields?.find(({ label }) => label === "Content")
-    ?.contentFieldValue?.data;
+const imageField = item?.image?.contentUrl
+const content = item?.articleBody || item?.description
+const urlDocument = item?.contentUrl
 
   const { item: user, loading: loadingUser } = useFetchUser(userId);
 
@@ -61,7 +61,7 @@ const DetailsPage = () => {
               <div className="container pt-4">
                 <div className="row">
                   <div className="col col-12">
-                    <h1 className="mb-4">{item.title}</h1>
+                    <h1 className="mb-4">{item.title || item.headline}</h1>
 
                     <div
                       dangerouslySetInnerHTML={{
@@ -70,9 +70,19 @@ const DetailsPage = () => {
                     />
                   </div>
                 </div>
+                {(urlDocument) && (
+                <div className="row">
+                  <div className="col col-12">
+                      <a href={url + urlDocument}>Download</a>
+                  </div>
+                </div>
+                )
+                }
+                {(urlDocument) && trackAnalyticsDocScript(userId, item.title, item.id)
+                }
               </div>
             </div>
-
+            
             <div className="container">
               <div className="row">
                 <div className="col col-12">

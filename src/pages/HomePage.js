@@ -14,7 +14,7 @@ const HomePage = () => {
 
   const userId = useQuery("userId");
   const { item: user, loading: loadingUser } = useFetchUser(userId);
-
+  var myCount = 1;
   useEffect(() => {
     setFilteredItems(
       filteredValue
@@ -50,25 +50,29 @@ const HomePage = () => {
 
         {!loading &&
           (items.length ? (
-            <div className="container">
+            <div className="container mt-5">
               <div className="row">
-                {filteredItems.map(({ contentFields, id, title }) => {
-                  const subtitleField = contentFields?.find(
-                    (field) => field.label === "Subtitle"
-                  );
+               
+                {filteredItems.map(({ contentFields, id, title, description, headline }) => {
+                    const subtitleField={description};
 
-                  return (
+                    myCount++
+                    if (myCount<=10){
+                    return (
                     <div className="col-lg-4 col-md-12" key={id}>
                       <ItemCard
                         description={
-                          subtitleField?.contentFieldValue?.data ||
+                          subtitleField?.description ||
                           "No subtitle available"
                         }
                         id={id}
-                        title={title}
+                        title={title || headline || subtitleField?.description ||
+                          "No Title available" }
                       />
                     </div>
-                  );
+                  )}else{
+                    return ("")
+                  };
                 })}
               </div>
             </div>

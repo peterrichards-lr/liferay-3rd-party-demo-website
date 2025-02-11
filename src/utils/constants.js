@@ -1,2 +1,2 @@
-export const url = "https://webserver-lctgvrnmnt-prd.lfr.cloud";
-export const documentTitle = "Liferay State";
+export const url = "https://webserver-lctclaritytemplate-prd.lfr.cloud";
+export const documentTitle = "Clarity Corporate WebSite";
