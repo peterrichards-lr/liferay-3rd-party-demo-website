@@ -1,6 +1,11 @@
-const RECOMMENDATIONS_KEY = "LIFERAY_CITY_RECOMMENDATIONS_KEY";
-const USERS_KEY = "LIFERAY_CITY_USERS_KEY";
-const USER_ID_KEY = "LIFERAY_CITY_USER_ID_KEY";
+const RECOMMENDATIONS_KEY = "LIFERAY_RECOMMENDATIONS";
+const USERS_KEY = "LIFERAY_USERS";
+const USER_ID_KEY = "LIFERAY_USER_ID";
+const USER_BASIC_AUTH_KEY = "LIFERAY_USER_BASIC_AUTH";
+
+export const resetLocalStorage = () => {
+  localStorage.clear();
+}
 
 export const setRecommendationsOnLocalStorage = (userId, items) => {
   localStorage.setItem(
@@ -35,4 +40,12 @@ export const getUserIdFromLocalStorage = () => {
   const userId = localStorage.getItem(USER_ID_KEY);
 
   return userId;
+};
+
+export const setBasicAuthOnLocalStorage = (username, password) => {
+  localStorage.setItem(USER_BASIC_AUTH_KEY, btoa(`${username}:${password}`));
+};
+
+export const getBasicAuthFromLocalStorage = () => {
+  return localStorage.getItem(USER_BASIC_AUTH_KEY);
 };

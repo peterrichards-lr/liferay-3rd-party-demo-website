@@ -3,7 +3,7 @@ import ItemCard from "../components/ItemCard";
 import ClayLoadingIndicator from "@clayui/loading-indicator";
 import { useFetchRecommendations, useFetchUser } from "../hooks/useFetch";
 import Header from "../components/Header";
-import { documentTitle } from "../utils/constants";
+import { DOCUMENT_TITLE } from "../utils/constants";
 import { useQuery } from "../hooks/useQuery";
 import { startAnalyticsScript } from "../utils/analytics-script";
 
@@ -27,7 +27,7 @@ const HomePage = () => {
 
   useEffect(() => {
     if (!loadingUser && !loading) {
-      document.title = documentTitle;
+      document.title = DOCUMENT_TITLE;
 
       startAnalyticsScript(user);
     }

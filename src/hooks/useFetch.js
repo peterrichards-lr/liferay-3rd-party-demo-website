@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import {
   getUsersFromLocalStorage,
   setUsersOnLocalStorage,
+  getBasicAuthFromLocalStorage
 } from "../utils/storage";
 import { useQuery } from "./useQuery";
+import { LIFERAY_HEADLESS_DELIVERY_ENDPOINT, LIFERAY_HEADLESS_ADMIN_USER_ENDPOINT, LIFERAY_SITE_ID, LIFERAY_CONTENT_SET_PROVIDER_KEY, LIFERAY_CLIENT_ID, LIFERAY_CLIENT_SECRET } from "../utils/constants";
 
 export const useFetchRecommendations = () => {
   const userId = useQuery("userId");
@@ -16,11 +18,10 @@ export const useFetchRecommendations = () => {
     const fetchRecommendation = async () => {
       try {
         const response = await fetch(
-          `https://webserver-lctclaritytemplate-prd.lfr.cloud/o/headless-delivery/v1.0/sites/32495/content-set-providers/by-key/com.liferay.analytics.machine.learning.internal.recommendation.info.collection.provider.UserContentRecommendationInfoItemCollectionProvider/content-set-elements`,
+          `${LIFERAY_HEADLESS_DELIVERY_ENDPOINT}/sites/${LIFERAY_SITE_ID}/content-set-providers/by-key/${LIFERAY_CONTENT_SET_PROVIDER_KEY}/content-set-elements`,
           {
             headers: {
-              //Authorization: `Basic ${btoa(`${item.alternateName}:test`)}`,
-              Authorization: `Basic ${btoa(`${item.emailAddress}:test`)}`,
+              Authorization: `Basic ${getBasicAuthFromLocalStorage()}`,
             },
           }
         );
@@ -69,12 +70,11 @@ export const useFetchUsers = () => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          `https://webserver-lctclaritytemplate-prd.lfr.cloud/o/headless-admin-user/v1.0/user-accounts`,
+          `${LIFERAY_HEADLESS_ADMIN_USER_ENDPOINT}/user-accounts`,
           {
             headers: {
               Authorization:
-                // "Basic YWRtaW5AY2xhcml0eXZpc2lvbnNvbHV0aW9ucy5jb206R2FydG5lck1RMjQ=",
-                `Basic ${btoa(`test@liferay.com:test`)}`,
+                `Basic ${btoa(`${LIFERAY_CLIENT_ID}:${LIFERAY_CLIENT_SECRET}`)}`,
             },
           }
         );

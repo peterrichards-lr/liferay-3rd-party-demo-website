@@ -5,30 +5,35 @@ import { Option, Picker, Text } from "@clayui/core";
 import ClayLoadingIndicator from "@clayui/loading-indicator";
 import { Link } from "react-router-dom";
 import { useFetchUsers } from "../hooks/useFetch";
-import { setUserIdOnLocalStorage } from "../utils/storage";
+import { setBasicAuthOnLocalStorage, setUserIdOnLocalStorage } from "../utils/storage";
 import { getImagePath } from "../utils/image-path";
 import { trackAnalyticsScript } from "../utils/analytics-script";
+import { DOCUMENT_TITLE } from "../utils/constants";
+import { resetLocalStorage } from "../utils/storage";
 
 const LoginPage = () => {
+  const [selectedUser, setSelectedUser] = useState("");
   const [password, setPassword] = useState("");
   const [selectedUserId, setSelectedUserId] = useState(null);
 
-  const { items, loading } = useFetchUsers();
+  const { items: users, loadingUsers } = useFetchUsers();
 
   const isLinkEnabled = password.trim() !== "";
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.emailAddress === "christian.carter@clarityvisionsolutions.com" ||
-    item.emailAddress === "capeloj@hotmail.com" ||
-    item.emailAddress === "walter.douglas@clarityvisionsolutions.com" ||
-    item.emailAddress === "adrienn.kocsis@liferay.com" ||
-    item.emailAddress === "ian.miller@clarityvisionsolutions.com" ||
-    item.emailAddress === "harper.roberts@clarityvisionsolutions.com" ||
-    item.emailAddress === "terrence.wheatley@somedistributor.com" ||    
-    item.emailAddress === "admin@clarityvisionsolutions.com" ||    
-    item.emailAddress === "clara.murphy@clarityvisionsolutions.com"
+  const filteredUsers = users.filter(
+    (user) =>
+      user.emailAddress === "christian.carter@clarityvisionsolutions.com" ||
+      user.emailAddress === "capeloj@hotmail.com" ||
+      user.emailAddress === "walter.douglas@clarityvisionsolutions.com" ||
+      user.emailAddress === "adrienn.kocsis@liferay.com" ||
+      user.emailAddress === "ian.miller@clarityvisionsolutions.com" ||
+      user.emailAddress === "harper.roberts@clarityvisionsolutions.com" ||
+      user.emailAddress === "terrence.wheatley@somedistributor.com" ||
+      user.emailAddress === "admin@clarityvisionsolutions.com" ||
+      user.emailAddress === "clara.murphy@clarityvisionsolutions.com"
   );
+
+  document.title = DOCUMENT_TITLE;
 
   return (
     <div className="login">
@@ -48,23 +53,27 @@ const LoginPage = () => {
           <Text size={4}>Login</Text>
         </label>
 
-        {loading && <ClayLoadingIndicator className="mb-4" />}
+        {loadingUsers && <ClayLoadingIndicator className="mb-4" />}
 
-        {!loading && (
+        {!loadingUsers && (
           <Picker
             selectedKey={selectedUserId}
             className="mb-3"
             aria-labelledby="picker-label"
             id="picker"
-            items={filteredItems}
-            onSelectionChange={(id) => setSelectedUserId(id)}
+            items={filteredUsers}
+            onSelectionChange={(id) => {
+              setSelectedUserId(id);
+              const user = users.find(user => String(user.id) === id);
+              setSelectedUser(user);
+            }}
           >
             {({ name, id }) => <Option key={id}>{name}</Option>}
           </Picker>
         )}
 
         <ClayInput
-          disabled={loading}
+          disabled={loadingUsers}
           id="basicInputText"
           placeholder="Type password"
           type="password"
@@ -74,7 +83,12 @@ const LoginPage = () => {
 
         <div className="text-center mt-3">
           <Link
-            onClick={() => {setUserIdOnLocalStorage(selectedUserId);trackAnalyticsScript(selectedUserId)}}
+            onClick={() => {
+              resetLocalStorage();
+              setUserIdOnLocalStorage(selectedUserId);
+              trackAnalyticsScript(selectedUser);
+              setBasicAuthOnLocalStorage(selectedUser.emailAddress, password);
+            }}
             className="login-link"
             to={isLinkEnabled ? `/home?userId=${selectedUserId}` : ""}
           >

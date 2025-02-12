@@ -5,6 +5,7 @@ import { ClayIconSpriteContext } from "@clayui/icon";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import DetailsPage from "./pages/DetailsPage";
+import { ROUTE_REDIRECT_URL } from "./utils/constants";
 
 const spritemap = "./icons.svg";
 
@@ -19,7 +20,7 @@ function App() {
             </Route>
 
             <Route exact path="/">
-              <Redirect to="/home?userId=37030" />
+              <Redirect to={ROUTE_REDIRECT_URL} />
             </Route>
 
             <Route exact path="/home">

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useFetchRecommendationItem, useFetchUser } from "../hooks/useFetch";
 import ClayLoadingIndicator from "@clayui/loading-indicator";
-import { documentTitle, url } from "../utils/constants";
+import { DOCUMENT_TITLE, url } from "../utils/constants";
 import Header from "../components/Header";
 import { useQuery } from "../hooks/useQuery";
 import { startAnalyticsScript } from "../utils/analytics-script";
@@ -20,7 +20,7 @@ const urlDocument = item?.contentUrl
 
   useEffect(() => {
     if (!loadingUser && !loadingItem) {
-      document.title = `${documentTitle} - ${item?.title}`;
+      document.title = `${DOCUMENT_TITLE} - ${item?.title}`;
 
       startAnalyticsScript(user);
     }
