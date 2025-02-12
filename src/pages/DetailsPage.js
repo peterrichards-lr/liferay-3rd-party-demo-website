@@ -12,9 +12,9 @@ const DetailsPage = () => {
   const { item, loading: loadingItem } = useFetchRecommendationItem();
   const userId = useQuery("userId");
 
-const imageField = item?.image?.contentUrl
-const content = item?.articleBody || item?.description
-const urlDocument = item?.contentUrl
+  const imageField = item?.image?.contentUrl
+  const content = item?.articleBody || item?.description
+  const urlDocument = item?.contentUrl
 
   const { item: user, loading: loadingUser } = useFetchUser(userId);
 
@@ -71,18 +71,15 @@ const urlDocument = item?.contentUrl
                   </div>
                 </div>
                 {(urlDocument) && (
-                <div className="row">
-                  <div className="col col-12">
-                      <a href={url + urlDocument}>Download</a>
+                  <div className="row">
+                    <div className="col col-12">
+                      <a href={url + urlDocument} onClick={() => {trackAnalyticsDocScript(userId, item.title, item.id)}}>Download</a>
+                    </div>
                   </div>
-                </div>
-                )
-                }
-                {(urlDocument) && trackAnalyticsDocScript(userId, item.title, item.id)
-                }
+                )}
               </div>
             </div>
-            
+
             <div className="container">
               <div className="row">
                 <div className="col col-12">
