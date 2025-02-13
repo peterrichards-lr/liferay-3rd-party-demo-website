@@ -1,5 +1,4 @@
 export const ROUTE_REDIRECT_URL = process.env.REACT_APP_ROUTE_REDIRECT_URL;
-export const url = "https://webserver-lctclaritytemplate-prd.lfr.cloud";
 export const DOCUMENT_TITLE = process.env.REACT_APP_DOCUMENT_TITLE;
 export const LIFERAY_AC_CHANNEL_ID = process.env.REACT_APP_LIFERAY_AC_CHANNEL_ID;
 export const LIFERAY_AC_PROJECT_ID = process.env.REACT_APP_LIFERAY_AC_PROJECT_ID;
