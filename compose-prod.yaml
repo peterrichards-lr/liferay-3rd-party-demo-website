@@ -1,0 +1,9 @@
+services:
+  web:
+    build:
+      context: .
+      target: production
+    ports:
+      - "80:80"
+    env_file:
+      - .env.production
