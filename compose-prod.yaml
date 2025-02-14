@@ -1,9 +1,12 @@
+name: liferay-3rd-party-demo-website-production
 services:
   web:
     build:
       context: .
       target: production
+    image: liferay-3rd-party-demo-website-production-web
     ports:
       - "80:80"
     env_file:
       - .env.production
+    container_name: production-web
