@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ClayInput } from "@clayui/form";
 import { useQuery } from "../hooks/useQuery";
-import { getImagePath } from "../utils/image-path";
+import { IMAGE_PATH } from "../utils/constants";
 
 const Header = ({ value, onChange, showFilter = true, userName }) => {
   const userId = useQuery("userId");
@@ -11,7 +11,7 @@ const Header = ({ value, onChange, showFilter = true, userName }) => {
       <Link to={`/home?userId=${userId}`}>
         <div className="position-relative">
           <img
-            src={`${getImagePath()}/logo-full-name-vector_clarity.svg`}
+            src={`${IMAGE_PATH}logo-full-name-vector_clarity.svg`}
             alt="logo"
           />
         </div>

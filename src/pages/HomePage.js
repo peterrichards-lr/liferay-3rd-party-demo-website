@@ -19,8 +19,8 @@ const HomePage = () => {
     setFilteredItems(
       filteredValue
         ? items.filter(({ title }) =>
-            title.toLowerCase().includes(filteredValue)
-          )
+          title.toLowerCase().includes(filteredValue)
+        )
         : items
     );
   }, [filteredValue, items]);
@@ -52,25 +52,26 @@ const HomePage = () => {
           (items.length ? (
             <div className="container mt-5">
               <div className="row">
-               
-                {filteredItems.map(({ contentFields, id, title, description, headline }) => {
-                    const subtitleField={description};
 
-                    myCount++
-                    if (myCount<=10){
+                {filteredItems.map(({ contentFields, id, title, description, headline }) => {
+                  const subtitleField = { description };
+
+                  myCount++
+                  if (myCount <= 10) {
                     return (
-                    <div className="col-lg-4 col-md-12" key={id}>
-                      <ItemCard
-                        description={
-                          subtitleField?.description ||
-                          "No subtitle available"
-                        }
-                        id={id}
-                        title={title || headline || subtitleField?.description ||
-                          "No Title available" }
-                      />
-                    </div>
-                  )}else{
+                      <div className="col-lg-4 col-md-12" key={id}>
+                        <ItemCard
+                          description={
+                            subtitleField?.description ||
+                            "No subtitle available"
+                          }
+                          id={id}
+                          title={title || headline || subtitleField?.description ||
+                            "No Title available"}
+                        />
+                      </div>
+                    )
+                  } else {
                     return ("")
                   };
                 })}

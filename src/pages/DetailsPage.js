@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useFetchRecommendationItem, useFetchUser } from "../hooks/useFetch";
 import ClayLoadingIndicator from "@clayui/loading-indicator";
-import { DOCUMENT_TITLE, LIFERAY_HOST_BASE_URL } from "../utils/constants";
+import { DOCUMENT_TITLE, LIFERAY_HOST_BASE_URL, LIFERAY_FILE_ENTRY_VERSION } from "../utils/constants";
 import Header from "../components/Header";
 import { useQuery } from "../hooks/useQuery";
 import { startAnalyticsScript } from "../utils/analytics-script";
@@ -27,7 +27,6 @@ const DetailsPage = () => {
   }, [loadingUser, user, item?.title, loadingItem]);
 
   function formatContent(content, url) {
-    debugger;
     const regex = /src=["']([^"']+)["']/;
 
     const match = content?.match(regex);
@@ -74,7 +73,7 @@ const DetailsPage = () => {
                 {(urlDocument) && (
                   <div className="row">
                     <div className="col col-12">
-                      <a href={LIFERAY_HOST_BASE_URL + urlDocument} onClick={() => {trackAnalyticsDocScript(userId, item.title, item.id)}}>Download</a>
+                      <a href={LIFERAY_HOST_BASE_URL + urlDocument} onClick={() => { trackAnalyticsDocScript(userId, item.title, item.id, LIFERAY_FILE_ENTRY_VERSION) }}>Download</a>
                     </div>
                   </div>
                 )}

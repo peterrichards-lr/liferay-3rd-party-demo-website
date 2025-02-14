@@ -6,9 +6,8 @@ import ClayLoadingIndicator from "@clayui/loading-indicator";
 import { Link } from "react-router-dom";
 import { useFetchUsers } from "../hooks/useFetch";
 import { setBasicAuthOnLocalStorage, setUserIdOnLocalStorage } from "../utils/storage";
-import { getImagePath } from "../utils/image-path";
 import { trackAnalyticsScript } from "../utils/analytics-script";
-import { DOCUMENT_TITLE } from "../utils/constants";
+import { DOCUMENT_TITLE, IMAGE_PATH } from "../utils/constants";
 import { resetLocalStorage } from "../utils/storage";
 
 const LoginPage = () => {
@@ -40,7 +39,7 @@ const LoginPage = () => {
       <ClayForm.Group className="sheet">
         <div className="text-center mb-4 position-relative">
           <img
-            src={`${getImagePath()}/logo-full-name-vector_clarity.svg`}
+            src={`${IMAGE_PATH}logo-full-name-vector_clarity.svg`}
             alt="logo"
           />
         </div>

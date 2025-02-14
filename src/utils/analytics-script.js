@@ -1,5 +1,5 @@
 import { getUserIdFromLocalStorage, setUserIdOnLocalStorage } from "./storage";
-import { LIFERAY_AC_CHANNEL_ID, LIFERAY_AC_DATA_SOURCE_ID, LIFERAY_AC_ENDPOINT, LIFERAY_AC_PROJECT_ID, LIFERAY_AC_SCRIPT_URL } from "./constants";
+import { LIFERAY_AC_CHANNEL_ID, LIFERAY_AC_DATA_SOURCE_ID, LIFERAY_AC_ENDPOINT, LIFERAY_AC_PROJECT_ID, LIFERAY_AC_SCRIPT_URL, LIFERAY_SITE_ID } from "./constants";
 
 function init(u, c, a, m, o, l) {
   o = "script";
@@ -72,14 +72,14 @@ export const trackAnalyticsScript = async (user, callback) => {
 
   callback && callback();
 }
-export const trackAnalyticsDocScript = async (user, docTitle, docId, callback) => {
+export const trackAnalyticsDocScript = async (user, docTitle, docId, docVersion, callback) => {
   console.log(`trackAnalyticsDocScript()`, user, docTitle, docId, callback)
   await initialiseAnalytics();
   updateIdentity(user);
 
   window.Analytics.track("reactDownloadDoc", { "docTitle": docTitle });
 
-  window.Analytics.send('documentDownloaded', 'Document', { 'groupId': 32495, 'fileEntryId': docId, 'title': docTitle, 'fileEntryVersion': '1.0' });
+  window.Analytics.send('documentDownloaded', 'Document', { 'groupId': LIFERAY_SITE_ID, 'fileEntryId': docId, 'title': docTitle, 'fileEntryVersion': docVersion });
 
   callback && callback();
 }

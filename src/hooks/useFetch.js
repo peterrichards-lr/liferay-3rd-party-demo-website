@@ -13,7 +13,7 @@ export const useFetchRecommendations = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const { loading: loadingUser, item } = useFetchUser(userId);
-  
+
   useEffect(() => {
     const fetchRecommendation = async () => {
       try {
