@@ -5,6 +5,7 @@ import {
   getBasicAuthFromLocalStorage
 } from "../utils/storage";
 import { useQuery } from "./useQuery";
+import axios from "axios";
 import { LIFERAY_HEADLESS_DELIVERY_ENDPOINT, LIFERAY_HEADLESS_ADMIN_USER_ENDPOINT, LIFERAY_SITE_ID, LIFERAY_CONTENT_SET_PROVIDER_KEY, LIFERAY_CLIENT_ID, LIFERAY_CLIENT_SECRET } from "../utils/constants";
 
 export const useFetchRecommendations = () => {
@@ -16,32 +17,25 @@ export const useFetchRecommendations = () => {
 
   useEffect(() => {
     const fetchRecommendation = async () => {
-      try {
-        const response = await fetch(
-          `${LIFERAY_HEADLESS_DELIVERY_ENDPOINT}/sites/${LIFERAY_SITE_ID}/content-set-providers/by-key/${LIFERAY_CONTENT_SET_PROVIDER_KEY}/content-set-elements`,
-          {
-            headers: {
-              Authorization: `Basic ${getBasicAuthFromLocalStorage()}`,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-
-          const itemsContent = data.items.map((item) => item.content);
-
-          setItems(itemsContent);
-          setLoading(false);
-        } else {
-          setItems([]);
-          setLoading(false);
-
-          throw new Error();
+      const response = await axios({
+        url: `${LIFERAY_HEADLESS_DELIVERY_ENDPOINT}/sites/${LIFERAY_SITE_ID}/content-set-providers/by-key/${LIFERAY_CONTENT_SET_PROVIDER_KEY}/content-set-elements`,
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          Authorization:
+            `Basic ${btoa(`${LIFERAY_CLIENT_ID}:${LIFERAY_CLIENT_SECRET}`)}`
         }
-      } catch (error) {
+      }).then((response) => {
+        const data = response.data;
+        const itemsContent = data.items.map((item) => item.content);
+
+        setItems(itemsContent);
+        setLoading(false);
+      }).catch((error) => {
+        setItems([]);
+        setLoading(false);
         console.log("ERROR: " + error);
-      }
+      })
     };
 
     if (!loadingUser) {
@@ -68,32 +62,24 @@ export const useFetchUsers = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      try {
-        const response = await fetch(
-          `${LIFERAY_HEADLESS_ADMIN_USER_ENDPOINT}/user-accounts`,
-          {
-            headers: {
-              Authorization:
-                `Basic ${btoa(`${LIFERAY_CLIENT_ID}:${LIFERAY_CLIENT_SECRET}`)}`,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-
-          setItems(data.items);
-          setLoading(false);
-
-          setUsersOnLocalStorage(data.items);
-        } else {
-          setLoading(false);
-
-          throw new Error();
+      const response = await axios({
+        url: `${LIFERAY_HEADLESS_ADMIN_USER_ENDPOINT}/user-accounts`,
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          Authorization:
+            `Basic ${btoa(`${LIFERAY_CLIENT_ID}:${LIFERAY_CLIENT_SECRET}`)}`
         }
-      } catch (error) {
+      }).then((response) => {
+        const data = response.data;
+        setItems(data.items);
+        setLoading(false);
+
+        setUsersOnLocalStorage(data.items);
+      }).catch((error) => {
+        setLoading(false);
         console.log("ERROR: " + error);
-      }
+      })
     };
 
     const usersFromLocalStorage = getUsersFromLocalStorage();

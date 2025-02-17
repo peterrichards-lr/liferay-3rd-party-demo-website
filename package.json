@@ -1,5 +1,4 @@
 {
-  "homepage": "https://fmarcio.github.io/liferay-3rd-party-demo-website",
   "name": "liferay-city",
   "version": "0.1.0",
   "private": true,
@@ -18,8 +17,10 @@
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.5.0",
     "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.7.9",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-oauth2-code-pkce": "^1.22.2",
     "react-router-dom": "^5.3.4",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
