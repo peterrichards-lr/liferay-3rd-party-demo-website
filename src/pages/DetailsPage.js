@@ -4,19 +4,16 @@ import { useFetchRecommendationItem, useFetchUser } from "../hooks/useFetch";
 import ClayLoadingIndicator from "@clayui/loading-indicator";
 import { DOCUMENT_TITLE, LIFERAY_HOST_BASE_URL, LIFERAY_FILE_ENTRY_VERSION } from "../utils/constants";
 import Header from "../components/Header";
-import { useQuery } from "../hooks/useQuery";
 import { startAnalyticsScript } from "../utils/analytics-script";
 import { trackAnalyticsDocScript } from "../utils/analytics-script";
 
 const DetailsPage = () => {
   const { item, loading: loadingItem } = useFetchRecommendationItem();
-  const userId = useQuery("userId");
-
   const imageField = item?.image?.contentUrl
   const content = item?.articleBody || item?.description
   const urlDocument = item?.contentUrl
 
-  const { item: user, loading: loadingUser } = useFetchUser(userId);
+  const { user, loading: loadingUser } = useFetchUser();
 
   useEffect(() => {
     if (!loadingUser && !loadingItem) {
@@ -73,7 +70,7 @@ const DetailsPage = () => {
                 {(urlDocument) && (
                   <div className="row">
                     <div className="col col-12">
-                      <a href={LIFERAY_HOST_BASE_URL + urlDocument} onClick={() => { trackAnalyticsDocScript(userId, item.title, item.id, LIFERAY_FILE_ENTRY_VERSION) }}>Download</a>
+                      <a href={LIFERAY_HOST_BASE_URL + urlDocument} onClick={() => { trackAnalyticsDocScript(user, item.title, item.id, LIFERAY_FILE_ENTRY_VERSION) }}>Download</a>
                     </div>
                   </div>
                 )}
@@ -83,7 +80,7 @@ const DetailsPage = () => {
             <div className="container">
               <div className="row">
                 <div className="col col-12">
-                  <Link to={`/home?userId=${userId}`}>Back to home</Link>
+                  <Link to={`/`}>Back to home</Link>
                 </div>
               </div>
             </div>

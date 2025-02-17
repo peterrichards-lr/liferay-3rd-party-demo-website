@@ -4,17 +4,15 @@ import ClayLoadingIndicator from "@clayui/loading-indicator";
 import { useFetchRecommendations, useFetchUser } from "../hooks/useFetch";
 import Header from "../components/Header";
 import { DOCUMENT_TITLE } from "../utils/constants";
-import { useQuery } from "../hooks/useQuery";
 import { startAnalyticsScript } from "../utils/analytics-script";
 
 const HomePage = () => {
-  const { items, loading } = useFetchRecommendations();
   const [filteredItems, setFilteredItems] = useState([]);
   const [filteredValue, setFilteredValue] = useState("");
 
-  const userId = useQuery("userId");
-  const { item: user, loading: loadingUser } = useFetchUser(userId);
-  var myCount = 1;
+  const { items, loading } = useFetchRecommendations();
+  const { user, loading: loadingUser } = useFetchUser();
+  
   useEffect(() => {
     setFilteredItems(
       filteredValue
@@ -33,6 +31,7 @@ const HomePage = () => {
     }
   }, [loadingUser, loading, user]);
 
+  var myCount = 1;
   return (
     <div>
       <Header

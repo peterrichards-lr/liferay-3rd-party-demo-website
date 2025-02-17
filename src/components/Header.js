@@ -1,14 +1,13 @@
-import { Link } from "react-router-dom";
 import { ClayInput } from "@clayui/form";
-import { useQuery } from "../hooks/useQuery";
+import { Link } from "react-router-dom";
 import { IMAGE_PATH } from "../utils/constants";
+import { useLogout } from '../hooks/useLogout'
 
 const Header = ({ value, onChange, showFilter = true, userName }) => {
-  const userId = useQuery("userId");
-
+  const  {logout} = useLogout();
   return (
     <header className="header d-flex justify-content-between py-4 px-6">
-      <Link to={`/home?userId=${userId}`}>
+      <Link to={`/`}>
         <div className="position-relative">
           <img
             src={`${IMAGE_PATH}logo-full-name-vector_clarity.svg`}
@@ -35,7 +34,7 @@ const Header = ({ value, onChange, showFilter = true, userName }) => {
             <div className="logged-in-user ml-8">
               welcome, {userName}!
               <span className="ml-2">
-                <Link to="/login">Sign out</Link>
+                <Link onClick={() => logout()} to="/logout">Sign out</Link>
               </span>
             </div>
           )}

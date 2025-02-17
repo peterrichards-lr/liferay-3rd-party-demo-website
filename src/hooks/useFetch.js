@@ -1,29 +1,33 @@
 import { useEffect, useState } from "react";
 import {
-  getUsersFromLocalStorage,
-  setUsersOnLocalStorage,
-  getBasicAuthFromLocalStorage
+  getUserFromLocalStorage,
+  setUserOnLocalStorage
 } from "../utils/storage";
-import { useQuery } from "./useQuery";
 import axios from "axios";
-import { LIFERAY_HEADLESS_DELIVERY_ENDPOINT, LIFERAY_HEADLESS_ADMIN_USER_ENDPOINT, LIFERAY_SITE_ID, LIFERAY_CONTENT_SET_PROVIDER_KEY, LIFERAY_CLIENT_ID, LIFERAY_CLIENT_SECRET } from "../utils/constants";
+import { LIFERAY_HEADLESS_DELIVERY_ENDPOINT, LIFERAY_HEADLESS_ADMIN_USER_ENDPOINT, LIFERAY_SITE_ID, LIFERAY_CONTENT_SET_PROVIDER_KEY } from "../utils/constants";
+import { AuthContext } from "react-oauth2-code-pkce";
+import { useContext } from "react";
+import { useQuery } from "./useQuery";
 
 export const useFetchRecommendations = () => {
-  const userId = useQuery("userId");
-
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { loading: loadingUser, item } = useFetchUser(userId);
+  const { loading: loadingUser, item } = useFetchUser();
+  const { token } = useContext(AuthContext);
 
   useEffect(() => {
+    if (!token && !loadingUser) {
+      setLoading(false);
+      return;
+    }
     const fetchRecommendation = async () => {
-      const response = await axios({
+      await axios({
         url: `${LIFERAY_HEADLESS_DELIVERY_ENDPOINT}/sites/${LIFERAY_SITE_ID}/content-set-providers/by-key/${LIFERAY_CONTENT_SET_PROVIDER_KEY}/content-set-elements`,
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           Authorization:
-            `Basic ${btoa(`${LIFERAY_CLIENT_ID}:${LIFERAY_CLIENT_SECRET}`)}`
+            `Bearer ${token}`
         }
       }).then((response) => {
         const data = response.data;
@@ -41,7 +45,7 @@ export const useFetchRecommendations = () => {
     if (!loadingUser) {
       fetchRecommendation();
     }
-  }, [item, loadingUser, userId]);
+  }, [item, loadingUser, token]);
 
   return { items, loading };
 };
@@ -56,50 +60,49 @@ export const useFetchRecommendationItem = () => {
   };
 };
 
-export const useFetchUsers = () => {
-  const [items, setItems] = useState([]);
+export const useFetchUser = () => {
+  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const { token } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await axios({
-        url: `${LIFERAY_HEADLESS_ADMIN_USER_ENDPOINT}/user-accounts`,
+    const fetchUser = async () => {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+      await axios({
+        url: `${LIFERAY_HEADLESS_ADMIN_USER_ENDPOINT}/my-user-account`,
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           Authorization:
-            `Basic ${btoa(`${LIFERAY_CLIENT_ID}:${LIFERAY_CLIENT_SECRET}`)}`
+            `Bearer ${token}`
         }
       }).then((response) => {
         const data = response.data;
-        setItems(data.items);
+        setUser(data);
         setLoading(false);
 
-        setUsersOnLocalStorage(data.items);
+        setUserOnLocalStorage(data);
       }).catch((error) => {
         setLoading(false);
         console.log("ERROR: " + error);
       })
     };
 
-    const usersFromLocalStorage = getUsersFromLocalStorage();
+    const userFromLocalStorage = getUserFromLocalStorage();
 
-    if (usersFromLocalStorage) {
-      setItems(usersFromLocalStorage);
+    if (userFromLocalStorage) {
+      setUser(userFromLocalStorage);
       setLoading(false);
     } else {
-      fetchUsers();
+      fetchUser();
     }
-  }, []);
+  }, [token]);
 
   return {
-    items,
+    user,
     loading,
   };
-};
-
-export const useFetchUser = (userId) => {
-  const { items, loading } = useFetchUsers();
-
-  return { loading, item: items.find(({ id }) => String(id) === userId) };
 };

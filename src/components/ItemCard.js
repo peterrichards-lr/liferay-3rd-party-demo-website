@@ -2,11 +2,8 @@ import React from "react";
 import ClayCard from "@clayui/card";
 import { Link } from "react-router-dom";
 import { Text } from "@clayui/core";
-import { useQuery } from "../hooks/useQuery";
 
 const ItemCard = ({ description, id, image, title }) => {
-  const userId = useQuery("userId");
-
   return (
     <ClayCard displayType={"file"}>
       <ClayCard.Body>
@@ -19,7 +16,7 @@ const ItemCard = ({ description, id, image, title }) => {
         </ClayCard.Description>
 
         <ClayCard.Description displayType="text">
-          <Link to={`/details?userId=${userId}&contentId=${id}`}>
+          <Link to={`/details?contentId=${id}`}>
             Read more
           </Link>
         </ClayCard.Description>

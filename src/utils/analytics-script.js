@@ -1,4 +1,4 @@
-import { getUserIdFromLocalStorage, setUserIdOnLocalStorage } from "./storage";
+import { getUserFromLocalStorage, setUserOnLocalStorage } from "./storage";
 import { LIFERAY_AC_CHANNEL_ID, LIFERAY_AC_DATA_SOURCE_ID, LIFERAY_AC_ENDPOINT, LIFERAY_AC_PROJECT_ID, LIFERAY_AC_SCRIPT_URL, LIFERAY_SITE_ID } from "./constants";
 
 function init(u, c, a, m, o, l) {
@@ -40,10 +40,10 @@ const initialiseAnalytics = async () => {
 }
 
 const updateIdentity = (user) => {
-  const previousUserId = getUserIdFromLocalStorage();
-  if (user && previousUserId !== String(user?.id)) {
+  const previousUser = getUserFromLocalStorage();
+  if (user && previousUser && String(previousUser?.id) !== String(user?.id)) {
     console.log('identity has changed');
-    setUserIdOnLocalStorage(user.id);
+    setUserOnLocalStorage(user);
     window.Analytics.setIdentity({
       email: user?.emailAddress,
       name: user?.name,
