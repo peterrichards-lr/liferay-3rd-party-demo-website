@@ -4,7 +4,7 @@ This demo showcases how content can be surfaced via Liferay DXP's headless APIs
 
 ## Configuration
 
-An appropriate .env file needs to be created. The .env.example provides more information on what this file needs to include.
+An appropriate .env file needs to be created. The .env.example provides more information on what this file needs to include. The values within this file assume Liferay is being used as the OAuth2 authentication server but they can easily be changed to accommodate another OAuth2 provider.
 
 ## Liferay Configuration
 
